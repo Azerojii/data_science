@@ -1,0 +1,28 @@
+\frametitle{Key Implementation Details}
+\textbf{Libraries Used:}
+    \begin{itemize}
+        \item \textbf{Data:} \texttt{pandas}, \texttt{numpy}, \texttt{yfinance}
+        \item \textbf{ML:} \texttt{scikit-learn}, \texttt{xgboost}
+        \item \textbf{Technical Analysis:} \texttt{ta}
+        \item \textbf{Visualization:} \texttt{plotly}, \texttt{seaborn}, \texttt{matplotlib}
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \textbf{Reproducibility:}
+    \begin{lstlisting}[language=Python]
+SEED = 42
+np.random.seed(SEED)
+# All models use random_state=SEED
+# Chronological split at 2023-01-01
+# Fixed hyperparameters documented
+    \end{lstlisting}
+
+    \vspace{0.3cm}
+
+    \textbf{Code Structure:}
+    \begin{itemize}
+        \item Modular functions for data loading, feature engineering, training
+        \item Self-contained Jupyter notebook for transparency
+        \item All steps executable top-to-bottom
+    \end{itemize}

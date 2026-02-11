@@ -1,0 +1,11 @@
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{Problem Definition}{5}{0}{2}
+\beamer@sectionintoc {3}{Data Collection and Preprocessing}{7}{0}{3}
+\beamer@sectionintoc {4}{Exploratory Data Analysis}{9}{0}{4}
+\beamer@sectionintoc {5}{Methodology}{11}{0}{5}
+\beamer@sectionintoc {6}{Implementation}{13}{0}{6}
+\beamer@sectionintoc {7}{Training and Evaluation}{15}{0}{7}
+\beamer@sectionintoc {8}{Results and Discussion}{18}{0}{8}
+\beamer@sectionintoc {9}{Conclusion}{22}{0}{9}
+\beamer@sectionintoc {10}{Future Work}{24}{0}{10}
+\beamer@sectionintoc {11}{Appendices}{26}{0}{11}
