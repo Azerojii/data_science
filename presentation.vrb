@@ -1,28 +1,21 @@
-\frametitle{Key Implementation Details}
-\textbf{Libraries Used:}
-    \begin{itemize}
-        \item \textbf{Data:} \texttt{pandas}, \texttt{numpy}, \texttt{yfinance}
-        \item \textbf{ML:} \texttt{scikit-learn}, \texttt{xgboost}
-        \item \textbf{Technical Analysis:} \texttt{ta}
-        \item \textbf{Visualization:} \texttt{plotly}, \texttt{seaborn}, \texttt{matplotlib}
-    \end{itemize}
+\frametitle{API Endpoint}
+\textbf{FastAPI backend} serves predictions as a REST API:
 
-    \vspace{0.3cm}
-
-    \textbf{Reproducibility:}
     \begin{lstlisting}[language=Python]
-SEED = 42
-np.random.seed(SEED)
-# All models use random_state=SEED
-# Chronological split at 2023-01-01
-# Fixed hyperparameters documented
+# POST /predict
+{
+  "ticker": "SMCI",
+  "signal": "BUY",
+  "probability": 0.62,
+  "model": "xgboost"
+}
     \end{lstlisting}
 
     \vspace{0.3cm}
 
-    \textbf{Code Structure:}
+    \textbf{Deployment options:}
     \begin{itemize}
-        \item Modular functions for data loading, feature engineering, training
-        \item Self-contained Jupyter notebook for transparency
-        \item All steps executable top-to-bottom
+        \item Local: \texttt{uvicorn api:app --reload}
+        \item Cloud: Docker container on any cloud provider
+        \item Dashboard: \texttt{streamlit run dashboard.py}
     \end{itemize}

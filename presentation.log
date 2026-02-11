@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.11.14)  11 FEB 2026 17:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.11.14)  11 FEB 2026 18:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1118,20 +1118,20 @@ Dictionary: translator-theorem-dictionary, Language: English
 n.toc) [2
 
 ]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 81.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 82.
 
 
 (C:\Users\dalil\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 81.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 82.
 
 
 (C:\Users\dalil\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on inp
-ut line 81.
+ut line 82.
 
 (C:\Users\dalil\AppData\Local\Programs\MiKTeX\tex/latex/sansmathaccent\ot1mathk
 erncmss.fd
@@ -1139,126 +1139,42 @@ File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
 ) [3
 
-] [4
+]
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 1
+30.
+
+(C:\Users\dalil\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
+File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+[4
 
 ] [5
 
 ] [6
 
-]
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 1
-93.
+] [7
 
-(C:\Users\dalil\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
-File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-)
-[7
+] [8
 
 ]
-LaTeX Font Info:    Trying to load font information for TS1+cmss on input line 
-220.
- (C:\Users\dalil\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmss.fd
-File: ts1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-)
-Overfull \vbox (1.29617pt too high) detected at line 220
+Overfull \vbox (14.26941pt too high) detected at line 290
  []
 
-[8
-
-] [9
+[9
 
 ] [10
 
-] [11
-
 ]
-Overfull \vbox (15.12068pt too high) detected at line 343
+Overfull \vbox (70.09259pt too high) detected at line 327
  []
 
-[12
+[11
+
+] [12
 
 ] [13
 
-]
-\openout4 = `presentation.vrb'.
-
- (presentation.vrb
-(C:\Users\dalil\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
-File: lstlang1.sty 2023/02/27 1.9 listings language file
-))
-Overfull \vbox (11.90839pt too high) detected at line 403
- []
-
-[14
-
-] [15
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 458--458
-[]\T1/cmss/m/n/10 n_estimators=300, max_depth=4,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 458--458
-\T1/cmss/m/n/10 lr=0.05, sub-sam-ple=0.9, col-sam-ple=0.9,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 458--458
-[]\T1/cmss/m/n/10 n_estimators=400, max_depth=8,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 458--458
-\T1/cmss/m/n/10 min_samples_leaf=8,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 458--458
-[]\T1/cmss/m/n/10 solver='liblinear', class_weight='balanced',
- []
-
-[16
-
-] [17
-
-]
-Overfull \vbox (4.86082pt too high) detected at line 523
- []
-
-[18
-
-] [19
-
-] [20
-
-] [21
-
-] [22
-
-]
-Overfull \vbox (12.81032pt too high) detected at line 664
- []
-
-[23
-
-]
-Overfull \vbox (0.51668pt too high) detected at line 696
- []
-
-[24
-
-]
-Overfull \vbox (13.68962pt too high) detected at line 724
- []
-
-[25
-
-] [26
-
-] [27
-
-] [28
+] [14
 
 ]
 \tf@nav=\write6
@@ -1275,49 +1191,56 @@ Overfull \vbox (13.68962pt too high) detected at line 724
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
-Package rerunfilecheck Info: File `presentation.out' has not changed.
-(rerunfilecheck)             Checksum: 81A70396F7BD7D3A6880EDB388BF5C31;1455.
+
+
+Package rerunfilecheck Warning: File `presentation.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `presentation.out':
+(rerunfilecheck)             Before: 0DDFF6CB97942973F258010E232F77B8;1208
+(rerunfilecheck)             After:  E2724C9A43E10C2B1078A2E9BDCE62BB;1155.
  ) 
 Here is how much of TeX's memory you used:
- 28391 strings out of 474486
- 565024 string characters out of 5743754
- 1980542 words of memory out of 5000000
- 50029 multiletter control sequences out of 15000+600000
- 585014 words of font info for 102 fonts, out of 8000000 for 9000
+ 27818 strings out of 474486
+ 558284 string characters out of 5743754
+ 1945542 words of memory out of 5000000
+ 49504 multiletter control sequences out of 15000+600000
+ 581693 words of font info for 92 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 128i,15n,123p,440b,1407s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx
-1200.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
-0\ecss1728.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
-/dpi600\ecsx2488.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknap
-pen/ec/dpi600\ecsx0900.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour
-/jknappen/ec/dpi600\ecit0900.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/
-ljfour/jknappen/ec/dpi600\ectt0900.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fon
-ts/pk/ljfour/jknappen/ec/dpi600\ecss0900.pk> <C:\Users\dalil\AppData\Local\MiKT
-eX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1000.pk> <C:\Users\dalil\AppData\Loca
-l\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1000.pk> <C:\Users\dalil\AppDat
-a\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcss1095.pk> <C:\Users\dalil\
-AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\
-dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1095.pk> <C:\
-Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1200.pk
-> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss0
-600.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600
-\ecss0800.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/
-dpi600\ecss1095.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknapp
-en/ec/dpi600\ecss1440.pk><C:/Users/dalil/AppData/Local/Programs/MiKTeX/fonts/ty
-pe1/public/amsfonts/cm/cmmi10.pfb><C:/Users/dalil/AppData/Local/Programs/MiKTeX
-/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/dalil/AppData/Local/Program
-s/MiKTeX/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:/Users/dalil/AppData/Loca
-l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmss8.pfb><C:/Users/dalil/AppD
-ata/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmssi10.pfb><C:/Users/
-dalil/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmssi8.pfb><
-C:/Users/dalil/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cms
-y10.pfb><C:/Users/dalil/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
-ts/symbols/msbm10.pfb><C:/Users/dalil/AppData/Local/Programs/MiKTeX/fonts/type1
-/urw/zapfding/uzdr.pfb>
-Output written on presentation.pdf (28 pages, 475603 bytes).
+ 128i,15n,123p,406b,832s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{Navigation15} has been referenced but does not exis
+t, replaced by a fixed one
+
+ <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx12
+00.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\
+ecss1728.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/d
+pi600\ecsx2488.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappe
+n/ec/dpi600\ectt1095.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/j
+knappen/ec/dpi600\ecsi1095.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/lj
+four/jknappen/ec/dpi600\ectt1000.pk> <C:\Users\dalil\AppData\Local\MiKTeX\fonts
+/pk/ljfour/jknappen/ec/dpi600\ecss1000.pk> <C:\Users\dalil\AppData\Local\MiKTeX
+\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1000.pk> <C:\Users\dalil\AppData\Local\
+MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1095.pk> <C:\Users\dalil\AppData\
+Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1200.pk> <C:\Users\dalil\Ap
+pData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss0600.pk> <C:\Users\da
+lil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss0800.pk> <C:\Us
+ers\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1095.pk> 
+<C:\Users\dalil\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss144
+0.pk><C:/Users/dalil/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
+cm/cmex10.pfb><C:/Users/dalil/AppData/Local/Programs/MiKTeX/fonts/type1/public/
+amsfonts/cm/cmmi10.pfb><C:/Users/dalil/AppData/Local/Programs/MiKTeX/fonts/type
+1/public/amsfonts/cm/cmss10.pfb><C:/Users/dalil/AppData/Local/Programs/MiKTeX/f
+onts/type1/public/amsfonts/cm/cmss8.pfb><C:/Users/dalil/AppData/Local/Programs/
+MiKTeX/fonts/type1/public/amsfonts/cm/cmssi10.pfb><C:/Users/dalil/AppData/Local
+/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmssi8.pfb><C:/Users/dalil/AppD
+ata/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/d
+alil/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.p
+fb>
+Output written on presentation.pdf (14 pages, 313703 bytes).
 PDF statistics:
- 1658 PDF objects out of 1728 (max. 8388607)
- 68 named destinations out of 1000 (max. 500000)
- 527 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1016 PDF objects out of 1200 (max. 8388607)
+ 37 named destinations out of 1000 (max. 500000)
+ 267 words of extra memory for PDF output out of 10000 (max. 10000000)
 

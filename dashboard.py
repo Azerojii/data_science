@@ -12,57 +12,36 @@ st.cache_data.clear()
 
 def recalculate_equity_curve(df, horizon_days=5):
     """
-    Recalculate equity curve from signals to fix 'spikey' data from pipeline artifacts.
-    Also ensures correct forward filling for 5-day holding periods.
+    Recalculate equity curve per ticker from signals.
+    Each ticker gets its own equity curve based on its own trades.
     """
     df = df.copy()
-    
-    # Sort by date
     df['date'] = pd.to_datetime(df['date'])
     df = df.sort_values(['ticker', 'date'])
-    
-    # Identify trading dates (every 5th date)
-    all_dates = sorted(df['date'].unique())
-    trading_dates = [all_dates[i] for i in range(0, len(all_dates), horizon_days)]
-    
-    # Create non-overlapping subset
-    trading_df = df[df['date'].isin(trading_dates)].copy()
-    
-    # Calculate strategy returns: signal * future_return
-    # Note: signal is already aligned with future_return for that period
-    trading_df['strategy_return'] = trading_df['signal'] * trading_df['future_return']
-    
-    # Aggregate to portfolio level (equal weight across available tickers)
-    portfolio_returns = trading_df.groupby('date')['strategy_return'].mean()
-    
-    # Calculate equity curve
-    portfolio_equity = (1 + portfolio_returns).cumprod()
-    
-    # Create a dense equity series (daily)
-    equity_series = pd.Series(index=all_dates, dtype=float)
-    equity_series.loc[portfolio_returns.index] = portfolio_equity
-    
-    # Update: Set initial value to 1.0 if not present
-    if all_dates[0] not in equity_series.index:
-        equity_series.loc[all_dates[0]] = 1.0
-        
-    # Forward fill to create the step chart effect
-    # This fills the calculated equity value forward for the holding period
-    equity_series = equity_series.ffill().fillna(1.0)
-    
-    # Map back to original dataframe
-    # We broadcast the portfolio equity to all tickers for visualization
-    equity_map = equity_series.to_dict()
-    df['equity_curve'] = df['date'].map(equity_map)
-    
-    # Convert date back to string if needed or keep as datetime
-    # The existing code expects string or object? Check usages.
-    # Usually plotly handles datetime fine. Let's keep it datetime for better sorting.
-    
-    return df
+
+    result_parts = []
+    for ticker, g in df.groupby('ticker'):
+        g = g.sort_values('date').copy()
+        dates = g['date'].tolist()
+        # Non-overlapping windows per ticker
+        trading_dates = [dates[i] for i in range(0, len(dates), horizon_days)]
+        trading_mask = g['date'].isin(trading_dates)
+        g['strategy_return'] = 0.0
+        g.loc[trading_mask, 'strategy_return'] = (
+            g.loc[trading_mask, 'signal'] * g.loc[trading_mask, 'future_return']
+        )
+        # Compute equity only on trading dates, then forward-fill
+        equity_vals = (1 + g.loc[trading_mask, 'strategy_return']).cumprod()
+        g['equity_curve'] = np.nan
+        g.loc[equity_vals.index, 'equity_curve'] = equity_vals.values
+        g['equity_curve'] = g['equity_curve'].ffill().fillna(1.0)
+        result_parts.append(g)
+
+    return pd.concat(result_parts, ignore_index=True)
 
 # Paths
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+MODEL_ARTIFACTS_PATH = os.path.join(DATA_DIR, "model_artifacts.joblib")
 TEST_SIGNALS_PATH = os.path.join(DATA_DIR, "test_signals.csv")
 NEWS_PATH = os.path.join(DATA_DIR, "news_headlines.csv")
 PRICES_PATH = os.path.join(DATA_DIR, "prices_daily.csv")
