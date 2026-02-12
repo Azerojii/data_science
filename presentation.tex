@@ -1,11 +1,24 @@
 \documentclass[aspectratio=169]{beamer}
-\usetheme{Madrid}
-\usecolortheme{default}
+\usetheme{Singapore}
+\usecolortheme{dolphin}
+
+% Refined colors: slate/gray with a single accent
+\setbeamercolor{structure}{fg=teal!70!black}
+\setbeamercolor{block title}{bg=teal!60!black, fg=white}
+\setbeamercolor{block body}{bg=gray!8, fg=black}
+\setbeamercolor{alertblock title}{bg=teal!70, fg=white}
+\setbeamercolor{alertblock body}{bg=teal!5, fg=black}
+\setbeamercolor{frametitle}{fg=teal!80!black}
+\setbeamertemplate{navigation symbols}{}
 
 % Packages
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{tgheros}
+\renewcommand{\familydefault}{\sfdefault}
 \usepackage{graphicx}
+\usepackage{grffile}
+\graphicspath{{notebooks/charts/}}
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -54,91 +67,169 @@
 \section{Introduction}
 % ============================================================
 
+\begin{frame}{What This Project Does (No Finance Needed)}
+    \begin{block}{In one sentence}
+        We use \textbf{historical daily data} (prices + a few derived numbers) to train a model that answers: ``\textbf{Will this asset go up by more than 3.5\% in the next 5 days?}'' Yes or no.
+    \end{block}
+    \vspace{0.3cm}
+    \textbf{Why 3.5\% and 5 days?} We need a clear, binary target. 3.5\% is a meaningful move for volatile stocks; 5 days is a short horizon so we have many examples. You can think of it as a \textbf{binary classification} problem: input = features today, output = class 0 (no) or 1 (yes).
+    \vspace{0.3cm}
+    \textbf{Stocks we use:} SMCI, CRSP, PLTR (three tickers). They are volatile, so 3.5\% moves happen often enough to learn from.
+\end{frame}
+
 \begin{frame}{Project Overview}
     \begin{block}{Objective}
-        Build an end-to-end ML pipeline that predicts whether a stock's price will rise by $>$3.5\% over the next 5 trading days (binary classification).
+        Build an end-to-end ML pipeline: \textbf{binary classification} --- predict if price will rise $>$3.5\% over the next 5 trading days.
     \end{block}
-
-    \vspace{0.4cm}
-
+    \vspace{0.3cm}
     \begin{columns}
         \column{0.5\textwidth}
-        \textbf{Target Stocks:}
+        \textbf{Target stocks (3 tickers):}
         \begin{itemize}
-            \item SMCI (Super Micro Computer)
-            \item CRSP (CRISPR Therapeutics)
-            \item PLTR (Palantir Technologies)
+            \item SMCI, CRSP, PLTR
+        \end{itemize}
+        \textbf{Tech stack:}
+        \begin{itemize}
+            \item Python: pandas, scikit-learn, XGBoost
+            \item Streamlit, FastAPI
         \end{itemize}
 
         \column{0.5\textwidth}
-        \textbf{Tech Stack:}
-        \begin{itemize}
-            \item Python (pandas, scikit-learn, XGBoost)
-            \item Plotly for visualization
-            \item Streamlit dashboard
-            \item FastAPI backend
-        \end{itemize}
+        \textbf{ML pipeline in short:}
+        \begin{enumerate}
+            \item Get data $\rightarrow$ build features
+            \item Split by \textbf{time} (train before 2023, test from 2023)
+            \item Train 3 models, pick one, tune threshold
+            \item Evaluate with metrics + backtest
+        \end{enumerate}
     \end{columns}
+\end{frame}
+
+\begin{frame}{ML in Plain Words (for Engineers)}
+    \textbf{What we do:} \emph{Supervised binary classification.}
+    \begin{itemize}
+        \item \textbf{Input (features):} For each day and each stock, we have $\sim$40 numbers (rolling means/stds of RSI, volatility, macro, etc.).
+        \item \textbf{Output (label):} 0 or 1. 1 = ``price went up more than 3.5\% in the next 5 days.''
+        \item \textbf{Training:} We fit a model on past data (before 2023) so it learns: which feature values tend to go with ``1'' vs ``0.''
+        \item \textbf{Testing:} We evaluate on future data (from 2023) to see how well it \emph{generalizes} (no peeking at the future when training).
+    \end{itemize}
+    \vspace{0.2cm}
+    \begin{alertblock}{Why split by time?}
+        If we shuffled dates, the model could ``cheat'' by using future info. Time-based split = train on past, test on future $\Rightarrow$ realistic performance.
+    \end{alertblock}
 \end{frame}
 
 % ============================================================
 \section{Data Collection \& Preprocessing}
 % ============================================================
 
-\begin{frame}{Data Pipeline}
-    \begin{columns}
-        \column{0.55\textwidth}
-        \textbf{Sources \& APIs:}
-        \begin{table}
-            \centering
-            \small
-            \begin{tabular}{ll}
-                \toprule
-                \textbf{Source} & \textbf{Library / API} \\
-                \midrule
-                Yahoo Finance & \texttt{yfinance} \\
-                FRED & REST API \\
-                Finnhub & REST API (optional) \\
-                \bottomrule
-            \end{tabular}
-        \end{table}
+\begin{frame}{Data Sources \& Dataset}
+    \textbf{Where the data comes from:}
+    \begin{table}
+        \centering
+        \small
+        \begin{tabular}{ll}
+            \toprule
+            \textbf{Source} & \textbf{What we get} \\
+            \midrule
+            Yahoo Finance (\texttt{yfinance}) & Daily OHLCV per stock \\
+            FRED (API) & 10-year US Treasury yield (one series) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+    \vspace{0.3cm}
+    \textbf{Dataset size:}
+    \begin{itemize}
+        \item 4,414 rows (one per date $\times$ ticker), 2020--2026
+        \item 3 tickers: SMCI, CRSP, PLTR
+        \item No missing values, no duplicates after preprocessing
+    \end{itemize}
+\end{frame}
 
-        \vspace{0.2cm}
-        \textbf{Dataset:}
-        \begin{itemize}
-            \item 4,414 daily records (2020--2026)
-            \item 3 tickers, OHLCV + macro
-            \item No missing values, no duplicates
-        \end{itemize}
+\begin{frame}{Preprocessing Steps}
+    \textbf{What we do to the raw data (in order):}
+    \begin{enumerate}
+        \item Download OHLCV per ticker; merge 10Y yield by date (forward-fill weekends).
+        \item Compute 12 derived series (RSI, MACD, Bollinger, MAs, ATR, volume Z-score, yield).
+        \item For each series: take \textbf{mean}, \textbf{std}, \textbf{last} over last 14 days $\Rightarrow$ 36 features.
+        \item For each row, define label: 1 if return over next 5 days $>$ 3.5\%, else 0.
+        \item Drop rows with NaN (warm-up for indicators).
+    \end{enumerate}
+    \vspace{0.3cm}
+    \begin{block}{Result}
+        Final matrix: \textbf{4,357 rows $\times$ 40 columns} (features + id columns). Ready for ML.
+    \end{block}
+\end{frame}
 
-        \column{0.45\textwidth}
-        \textbf{Preprocessing Steps:}
-        \begin{enumerate}
-            \item Download OHLCV per ticker
-            \item Merge macro data (forward-fill)
-            \item Compute 12 technical indicators
-            \item Build 14-day rolling aggregates
-            \item Generate binary target labels
-            \item Drop NaN warm-up rows
-        \end{enumerate}
+\begin{frame}{Dataset \& Features --- Raw Columns}
+    \textbf{Raw dataset} (one row per date $\times$ ticker):
+    \begin{table}
+        \centering
+        \small
+        \begin{tabular}{ll}
+            \toprule
+            \textbf{Column} & \textbf{Meaning} \\
+            \midrule
+            OHLCV & Open, High, Low, Close (prices); Volume (trade count) \\
+            Macro & 10Y US Treasury yield (FRED), forward-filled by date \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+    \vspace{0.25cm}
+    From these we \textbf{derive} 12 time series (next slide). Then we apply a \textbf{rolling window}: for each series we take mean, std, and last value over the last 14 days, so the model sees ``recent context'' instead of a single day.
+\end{frame}
 
-        \vspace{0.2cm}
-        \begin{block}{Result}
-            4,357 rows $\times$ 40 columns
-        \end{block}
-    \end{columns}
+\begin{frame}{Dataset \& Features --- The 12 Base Features}
+    \textbf{12 base series} (all numeric). Selected ones:
+    \begin{table}
+        \centering
+        \scriptsize
+        \begin{tabular}{ll}
+            \toprule
+            \textbf{Feature} & \textbf{What it is (engineer-friendly)} \\
+            \midrule
+            RSI(14) & Momentum: 0--100 index from recent gains/losses \\
+            MACD (12,26,9) & Trend: fast vs slow price averages; signal \& histogram \\
+            Bollinger width & Volatility: (upper $-$ lower band) / price; 20-day $\pm$ 2$\sigma$ \\
+            MA 50 / MA 200 & Smoothed price: 50-day and 200-day rolling mean \\
+            ATR(14), ATR\% & Volatility: avg daily range; ATR\% = ATR/price $\times$ 100 \\
+            Volume Z-score & (volume $-$ 50-day mean) / 50-day std \\
+            10Y yield & US gov bond rate (one series, merged by date) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+    \vspace{0.15cm}
+    \textbf{Rolling step:} mean, std, last over 14 days per series $\Rightarrow$ 36 features. Final: \textbf{4,357 $\times$ 40}.
 \end{frame}
 
 % ============================================================
 \section{Exploratory Data Analysis}
 % ============================================================
 
+\begin{frame}{Target \& Macro Context}
+    \textbf{What we predict (plain language):} At each day $t$, the label is: ``Will this stock go \textbf{up by more than 3.5\%} over the \textbf{next 5 trading days}?'' $\Rightarrow$ binary (yes/no). Formally:
+    \[
+    y_t = \mathbb{1}\!\left(r_{t,t+5} > 0.035\right), \quad r_{t,t+5} = \frac{\text{close}_{t+5}}{\text{close}_t} - 1
+    \]
+    \vspace{0.15cm}
+    \textbf{10-year Treasury yield:} A single daily time series (US government bond rate from FRED). We use it as an \textbf{input feature} only: it encodes ``macro regime'' (e.g. low vs high rates). Merged by date and forward-filled so every (date, ticker) row has a value.
+    \vspace{0.2cm}
+    \begin{columns}
+        \column{0.55\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{10-Year Treasury Yield Over Time}
+        \end{center}
+        \column{0.4\textwidth}
+        \small
+        Chart: how that macro feature evolves over time. No need to interpret it financially; the model uses it as a numeric covariate.
+    \end{columns}
+\end{frame}
+
 \begin{frame}{EDA --- Stock Prices}
     \begin{columns}
         \column{0.5\textwidth}
-        % ---- PLACEHOLDER: insert normalized price chart ----
         \begin{center}
-            \fbox{\parbox{0.9\textwidth}{\centering\vspace{2.5cm}\textit{[Insert: Normalized Price Chart]}\vspace{2.5cm}}}
+            \includegraphics[width=\textwidth]{Normalized Price Chart}
         \end{center}
 
         \column{0.5\textwidth}
@@ -164,17 +255,17 @@
 \begin{frame}{EDA --- Distributions \& Correlations}
     \begin{columns}
         \column{0.5\textwidth}
-        % ---- PLACEHOLDER: insert return distribution plot ----
         \begin{center}
-            \fbox{\parbox{0.9\textwidth}{\centering\vspace{2.5cm}\textit{[Insert: Return Distribution]}\vspace{2.5cm}}}
+            \includegraphics[width=\textwidth]{Return Distribution}
         \end{center}
 
         \column{0.5\textwidth}
-        % ---- PLACEHOLDER: insert correlation heatmap ----
         \begin{center}
-            \fbox{\parbox{0.9\textwidth}{\centering\vspace{2.5cm}\textit{[Insert: Correlation Heatmap]}\vspace{2.5cm}}}
+            \includegraphics[width=\textwidth]{Target Class Balance}
         \end{center}
     \end{columns}
+    \vspace{0.2cm}
+    \small Left: 5-day forward return distribution. Right: target balance (up $>$3.5\% $\approx$ 34\%).
 \end{frame}
 
 % ============================================================
@@ -274,9 +365,8 @@
 
     \begin{columns}
         \column{0.5\textwidth}
-        % ---- PLACEHOLDER: insert confusion matrix ----
         \begin{center}
-            \fbox{\parbox{0.85\textwidth}{\centering\vspace{2cm}\textit{[Insert: Confusion Matrix]}\vspace{2cm}}}
+            \includegraphics[width=0.9\textwidth]{Confusion Matrix}
         \end{center}
 
         \column{0.5\textwidth}
@@ -289,12 +379,50 @@
     \end{columns}
 \end{frame}
 
+\begin{frame}{Threshold Tuning (from Notebook)}
+    \textbf{Problem:} Default 0.5 may be suboptimal. We sweep thresholds and evaluate by \emph{Sharpe ratio} on the backtest.
+    \vspace{0.25cm}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{Precision_Recall_Coverage_vs_Threshold}
+        \end{center}
+        \column{0.45\textwidth}
+        \textbf{From notebook:}
+        \begin{itemize}
+            \item Higher threshold $\Rightarrow$ fewer trades, often better precision
+            \item Best threshold by Sharpe: \textbf{0.40}
+            \item Trade-off: precision vs.\ coverage
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Feature Importance (XGBoost)}
+    \begin{center}
+        \includegraphics[width=0.85\textwidth]{Top 15 Feature Importances (XGBoost)}
+    \end{center}
+    \vspace{0.2cm}
+    \small Rolling-window stats (mean/std/last) of RSI, ATR, MACD, 10Y yield, etc.\ drive predictions; ablation in the notebook confirms which feature groups help.
+\end{frame}
+
+\begin{frame}{ROC \& Model Comparison}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{ROC curve for the test set(xgboost)}
+        \end{center}
+        \column{0.5\textwidth}
+        \begin{center}
+            \includegraphics[width=\textwidth]{Model Comparison on Test Set}
+        \end{center}
+    \end{columns}
+\end{frame}
+
 \begin{frame}{Backtest \& Equity Curve}
     \begin{columns}
         \column{0.5\textwidth}
-        % ---- PLACEHOLDER: insert equity curve ----
         \begin{center}
-            \fbox{\parbox{0.9\textwidth}{\centering\vspace{2.5cm}\textit{[Insert: Equity Curve]}\vspace{2.5cm}}}
+            \includegraphics[width=\textwidth]{Equity Curve (0.4)}
         \end{center}
 
         \column{0.5\textwidth}
@@ -302,15 +430,15 @@
         \begin{itemize}
             \item Non-overlapping 5-day windows
             \item Long-only / cash strategy
-            \item Signal: BUY if $P(\text{up}) \geq 0.50$
+            \item Signal: BUY if $P(\text{up}) \geq$ \textbf{0.40} (best by Sharpe)
         \end{itemize}
 
         \vspace{0.3cm}
 
-        \textbf{Metrics:}
+        \textbf{Metrics (threshold 0.4):}
         \begin{itemize}
-            \item Annualized return: 31.3\%
-            \item Max drawdown: $-$28.4\%
+            \item Annualized return, Sharpe, max drawdown from holdout
+            \item Threshold chosen by risk-adjusted performance
         \end{itemize}
     \end{columns}
 \end{frame}
